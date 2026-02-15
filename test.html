@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجموعة الأشراف للاستثمار العقاري والمقاولات</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #c5a059;
+            --primary-dark: #a08040;
+            --dark: #020617;
+            --secondary: #0f172a;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Particles Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #c5a059, #eecda3, #c5a059);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(197, 160, 89, 0.25);
+        }
+
+        .btn-gold {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+            text-align: center;
+        }
+
+        .btn-gold:hover {
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.6);
+            transform: scale(1.05);
+        }
+
+        .calc-input {
+            background: rgba(2, 6, 23, 0.8);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            color: white;
+            padding: 16px;
+            border-radius: 14px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .calc-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+
+        .project-img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            height: 250px;
+        }
+
+        .project-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .glass-card:hover .project-img { transform: scale(1.1); }
+
+        .badge-premium {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: rgba(197, 160, 89, 0.9);
+            color: black;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 11px;
+            z-index: 10;
+        }
+
+        nav.scrolled {
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        }
+
+        .info-pill {
+            background: rgba(197, 160, 89, 0.1);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--primary);
+        }
+
+        #mobile-menu {
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .hidden-menu {
+            transform: translateY(-100%);
+        }
+
+        .show-menu {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-[#c5a059] rounded-lg flex items-center justify-center rotate-45">
+                    <span class="text-black font-black -rotate-45">A</span>
+                </div>
+                <div class="text-2xl font-black text-white tracking-tighter">
+                    <span class="text-[#c5a059]">الأشراف</span> للاستثمار
+                </div>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex gap-10 items-center">
+                <a href="#home" class="hover:text-[#c5a059] transition-all font-semibold">الرئيسية</a>
+                <a href="#projects" class="hover:text-[#c5a059] transition-all font-semibold">عقاراتنا</a>
+                <a href="#services" class="hover:text-[#c5a059] transition-all font-semibold">مميزاتنا</a>
+                <a href="#calculator" class="hover:text-[#c5a059] transition-all font-semibold">الحاسبة</a>
+                <a href="#contact" class="btn-gold !py-2.5 !px-8 text-sm">تواصل الآن</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="absolute top-0 left-0 w-full h-screen bg-black/95 flex flex-col items-center justify-center gap-8 hidden-menu md:hidden">
+            <button id="close-menu" class="absolute top-8 right-8 text-white text-3xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <a href="#home" class="text-2xl font-bold hover:text-[#c5a059]">الرئيسية</a>
+            <a href="#projects" class="text-2xl font-bold hover:text-[#c5a059]">عقاراتنا</a>
+            <a href="#services" class="text-2xl font-bold hover:text-[#c5a059]">مميزاتنا</a>
+            <a href="#calculator" class="text-2xl font-bold hover:text-[#c5a059]">حاسبة الاستثمار</a>
+            <a href="#contact" class="btn-gold">تواصل معنا</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="min-h-screen flex items-center justify-center pt-24 pb-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="inline-block px-4 py-1.5 mb-6 border border-[#c5a059]/30 rounded-full bg-[#c5a059]/5 backdrop-blur-md">
+                <span class="text-[#c5a059] text-sm font-bold uppercase tracking-widest animate-pulse">وجهتك الأولى للسكن الفاخر في مصر</span>
+            </div>
+            <h1 class="text-5xl md:text-8xl font-black mb-10 leading-tight">
+                استثمر في <br><span class="gradient-text tracking-tighter">مساحات الرفاهية</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-2xl max-w-4xl mx-auto mb-14 leading-relaxed font-light">
+                نحن في مجموعة الأشراف نحول الأحلام إلى واقع ملموس، نقدم لك أرقى الفلل في القاهرة الكبرى والساحل الشمالي بتشطيبات استثنائية تفوق التوقعات.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="#projects" class="btn-gold text-lg shadow-gold">اكتشف الوحدات المتاحة</a>
+                <a href="#calculator" class="px-10 py-4 rounded-full border border-white/20 hover:border-[#c5a059]/50 hover:bg-white/5 transition-all font-bold backdrop-blur-sm">احسب ميزانية تشطيبك</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Detailed Projects Section -->
+    <section id="projects" class="py-24 bg-white/5">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">فلل <span class="gradient-text">مختارة لك</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">تصفح مجموعة من أرقى الوحدات التي تعكس الفخامة والخصوصية، مع كافة المعلومات الفنية.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Project 1 -->
+                <div class="glass-card overflow-hidden group">
+                    <div class="project-img-container">
+                        <span class="badge-premium">ألترا مودرن</span>
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80" alt="Villa Diamond" class="project-img">
+                    </div>
+                    <div class="p-8">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="info-pill"><i class="fas fa-map-marker-alt"></i> التجمع الخامس</span>
+                            <span class="info-pill"><i class="fas fa-ruler-combined"></i> 550 م²</span>
+                            <span class="info-pill"><i class="fas fa-bed"></i> 6 غرف</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4 group-hover:text-[#c5a059] transition-colors">فيلا لا فيدا - بيت الوطن</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">تتميز بإطلالة مباشرة على منطقة النوادي، ريسبشن 4 قطع، حديقة خاصة بمدخل مستقل، وجاهزية تامة لأنظمة Smart Home.</p>
+                        <div class="flex justify-between items-center pt-6 border-t border-white/10">
+                            <div>
+                                <span class="block text-xs text-gray-500 uppercase">سعر الوحدة</span>
+                                <span class="text-xl font-bold text-white">19,200,000 ج.م</span>
+                            </div>
+                            <a href="https://wa.me/+201000000000" class="btn-gold !py-2 !px-4 text-xs font-bold">حجز معاينة</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-card overflow-hidden group">
+                    <div class="project-img-container">
+                        <span class="badge-premium">قصور ملكية</span>
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="Royal Mansion" class="project-img">
+                    </div>
+                    <div class="p-8">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="info-pill"><i class="fas fa-map-marker-alt"></i> زايد الجديدة</span>
+                            <span class="info-pill"><i class="fas fa-ruler-combined"></i> 850 م²</span>
+                            <span class="info-pill"><i class="fas fa-parking"></i> جراج 4 سيارات</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4 group-hover:text-[#c5a059] transition-colors">قصر الزمرد - الشيخ زايد</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">قصر كلاسيكي فاخر، حمام سباحة مغطى للسيدات، اسانسير داخلي، وتشطيب خارجي من الحجر الهاشمي والرخام الفاخر.</p>
+                        <div class="flex justify-between items-center pt-6 border-t border-white/10">
+                            <div>
+                                <span class="block text-xs text-gray-500 uppercase tracking-widest">سعر الوحدة</span>
+                                <span class="text-xl font-bold text-white">35,000,000 ج.م</span>
+                            </div>
+                            <a href="https://wa.me/+201000000000" class="btn-gold !py-2 !px-4 text-xs font-bold">تفاصيل أكثر</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-card overflow-hidden group">
+                    <div class="project-img-container">
+                        <span class="badge-premium">ساحلية</span>
+                        <img src="https://images.unsplash.com/photo-1515263487990-61b07816b324?auto=format&fit=crop&w=800&q=80" alt="Summer Villa" class="project-img">
+                    </div>
+                    <div class="p-8">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="info-pill"><i class="fas fa-map-marker-alt"></i> العلمين الجديدة</span>
+                            <span class="info-pill"><i class="fas fa-umbrella-beach"></i> صف أول بحر</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-4 group-hover:text-[#c5a059] transition-colors">فيلا سي بريز - مزارين</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">وحدة استثنائية على اللاجون مباشرة، تسليم كامل بالفرش والتكييفات، إمكانية التقسيط حتى 7 سنوات بمقدم 10% فقط.</p>
+                        <div class="flex justify-between items-center pt-6 border-t border-white/10">
+                            <div>
+                                <span class="block text-xs text-gray-500 uppercase tracking-widest">مقدم حجز</span>
+                                <span class="text-xl font-bold text-white">3,200,000 ج.م</span>
+                            </div>
+                            <a href="https://wa.me/+201000000000" class="btn-gold !py-2 !px-4 text-xs font-bold">واتساب</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Why Us -->
+    <section id="services" class="py-24 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h2 class="text-5xl font-black mb-8 leading-tight">لماذا يثق بنا <br><span class="text-[#c5a059]">كبار المستثمرين؟</span></h2>
+                    <div class="space-y-8">
+                        <div class="flex gap-6">
+                            <div class="w-16 h-16 bg-[#c5a059]/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-[#c5a059]/20">
+                                <i class="fas fa-award text-[#c5a059] text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">جودة تنفيذ غير مسبوقة</h4>
+                                <p class="text-gray-400 text-sm">نستخدم أجود خامات حديد التسليح (عز) والخرسانة الجاهزة مع رقابة هندسية صارمة في كل مرحلة صب.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-16 h-16 bg-[#c5a059]/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-[#c5a059]/20">
+                                <i class="fas fa-clock text-[#c5a059] text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">الالتزام بالجدول الزمني</h4>
+                                <p class="text-gray-400 text-sm">نحترم وقتك. تسليم الوحدات يتم في الموعد المتفق عليه مع تعويضات مالية في حال التأخير، وهو ما يضمنه عقد البيع.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-16 h-16 bg-[#c5a059]/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-[#c5a059]/20">
+                                <i class="fas fa-shield-alt text-[#c5a059] text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">قانونية وسلامة الأوراق</h4>
+                                <p class="text-gray-400 text-sm">كافة مشاريعنا مرخصة بالكامل، ولدينا سجل تجاري وبطاقة ضريبية، مما يضمن لك استثماراً آمناً بعيداً عن أي مشاكل قانونية.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="glass-card p-4 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1503387762-592dea58ef21?auto=format&fit=crop&w=800&q=80" alt="Construction Quality" class="rounded-xl filter grayscale hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    <div class="absolute -bottom-8 -left-8 glass-card p-8 bg-[#c5a059] text-black max-w-xs border-none">
+                        <p class="font-bold text-lg mb-2">"هدفنا ليس بناء جدران، بل بناء سمعة تدوم لأجيال."</p>
+                        <span class="text-sm opacity-80">- رئيس مجلس الإدارة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Calculator -->
+    <section id="calculator" class="py-24">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto glass-card p-10 md:p-16 text-center">
+                <h2 class="text-4xl font-black mb-4 italic">حاسبة <span class="text-[#c5a059]">ميزانية التشطيب</span> التقديرية</h2>
+                <p class="text-gray-400 mb-12">أدخل بيانات وحدتك العقارية للحصول على تقدير لميزانية التشطيب لعام 2024</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-right">
+                    <div>
+                        <label class="block mb-2 font-bold text-sm text-[#c5a059]">مستوى التشطيب المطلوب</label>
+                        <select id="finish-level" class="calc-input">
+                            <option value="9500">سوبر لوكس (خامات محلية فاخرة)</option>
+                            <option value="13500">ألترا سوبر لوكس (خامات مستوردة)</option>
+                            <option value="18000">ملكي (رخام، جبس بورد معقد، سمارت هوم)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-bold text-sm text-[#c5a059]">المساحة بالمتر المربع</label>
+                        <input type="number" id="unit-area" class="calc-input" placeholder="مثال: 200">
+                    </div>
+                </div>
+
+                <div class="mt-12 p-8 bg-black/40 rounded-2xl border border-[#c5a059]/20">
+                    <span class="text-gray-500 text-sm">التكلفة التقديرية الكلية</span>
+                    <div class="text-5xl font-black text-[#c5a059] my-4" id="calc-result">0</div>
+                    <span class="text-gray-400 text-sm italic">* تشمل المصنعية والخامات والإشراف الهندسي</span>
+                </div>
+
+                <button onclick="updatePrice()" class="btn-gold mt-10 w-full md:w-auto px-20">تحديث التقدير</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <footer id="contact" class="pt-24 pb-12 bg-[#020617] border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20 text-center md:text-right">
+                <div>
+                    <h4 class="text-2xl font-black text-white mb-6">مجموعة <span class="text-[#c5a059]">الأشراف</span></h4>
+                    <p class="text-gray-500 leading-relaxed">المقر الرئيسي: التجمع الخامس، منطقة البنوك، مول بريميوم، الطابق الثالث. متواجدون لخدمتكم طوال أيام الأسبوع.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold text-white mb-6">تواصل مباشر</h4>
+                    <div class="space-y-4">
+                        <a href="tel:+201000000000" class="block text-gray-400 hover:text-[#c5a059]"><i class="fas fa-phone-alt ml-2"></i> +20 100 000 0000</a>
+                        <a href="mailto:info@alashraaf.com" class="block text-gray-400 hover:text-[#c5a059]"><i class="fas fa-envelope ml-2"></i> info@alashraaf.com</a>
+                        <a href="#" class="block text-gray-400 hover:text-[#c5a059]"><i class="fas fa-map-marker-alt ml-2"></i> موقعنا على الخرائط</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold text-white mb-6">تابعنا</h4>
+                    <div class="flex justify-center md:justify-start gap-4">
+                        <a href="#" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#c5a059] hover:text-black transition-all"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#c5a059] hover:text-black transition-all"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#c5a059] hover:text-black transition-all"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-10 border-t border-white/5 text-center text-gray-600 text-xs">
+                <p>&copy; 2024 مجموعة الأشراف للاستثمار العقاري - جميع الحقوق محفوظة.</p>
+                <p class="mt-2 opacity-50">تصميم وتطوير بواسطة فريق الأشراف الهندسي</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Particle Logic
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.radius = Math.random() * 1.2 + 0.3;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(197, 160, 89, 0.3)';
+                ctx.fill();
+            }
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(197, 160, 89, ${0.1 - dist/1200})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+
+        // Mobile Menu Functions
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeMenu = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.onclick = () => {
+            mobileMenu.classList.remove('hidden-menu');
+            mobileMenu.classList.add('show-menu');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const hideMenu = () => {
+            mobileMenu.classList.remove('show-menu');
+            mobileMenu.classList.add('hidden-menu');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeMenu.onclick = hideMenu;
+        
+        // Hide menu when link clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.onclick = hideMenu;
+        });
+
+        // Calculator Function
+        function updatePrice() {
+            const level = parseFloat(document.getElementById('finish-level').value);
+            const area = parseFloat(document.getElementById('unit-area').value) || 0;
+            const total = Math.round(level * area);
+            
+            animateVal("calc-result", 0, total, 1000);
+        }
+
+        function animateVal(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                obj.innerText = current.toLocaleString('ar-EG') + " ج.م";
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Navbar Animation
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        window.onload = () => {
+            resize();
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+            loop();
+        }
+
+        window.onresize = resize;
+    </script>
+</body>
+</html>
